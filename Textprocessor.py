@@ -277,6 +277,7 @@ if __name__=='__main__':
 
     cp = Textprocessor([text, text2], stopwords=stop_words)  # Für eigene Stopwörter hier stopwords = stop_words übergeben
     #cp.preprossText()
-    cp.ExtractKeywords()
+    kw = cp.ExtractKeywords()
     #cp.CreatePairsFromKeywords()  # Falls Edges für Gephi abgespeichert werden sollen saveFile = True übergeben
     #cp.CreateNetwork()
+    print(kw)
