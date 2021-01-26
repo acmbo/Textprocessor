@@ -272,12 +272,21 @@ if __name__=='__main__':
                        'Stuttgart','Deutschland','Aufgaben','Ansatz','Aufgaben'
                        ))
 
-    text='Die Aufgabenstellung bis zum Jahr 2050 den Gebäudebestand der Bundesrepublik Deutschland und somit auch unserer Städte nahezu klimaneutral mit Energie zu versorgen, wird im Projekt STADTQUARTIER 2050 beispielhaft für zwei Quartiere in zwei Städten bereits jetzt angegangen. Dabei wird das jeweils vorhandene ambitionierte städtische Energiekonzept konkret in bewusst unterschiedlichen Wohnquartieren unter dem besonderen Aspekt der sozialverträglichen Mietpreisentwicklung umgesetzt. Es werden in den zwei Quartieren über 960 Wohneinheiten entstehen mit einer Gesamtinvestitionssumme von ca. 190 Mio. Euro. Im Einzelnen handelt es sich um ein Konversionsgebiet mit Umnutzung, Sanierung und teilweise Abriss und Neubebauung eines ehemaligen Krankenhausareals in Stuttgart und eine Randgebietssanierung mit Baufelderweiterung in Überlingen. Da in beiden Städten ähnliche Aufgaben im Bereich der unterschiedlichen Wohnquartiere anstehen, ermöglicht dieser systematische Ansatz, unterstützt auch durch den direkten Austausch in der geplanten Städteplattform eine Übertragung und Nutzung der Ergebnisse und Erfahrungen (also einen Multiplikationseffekt) aus den Demonstrationsquartieren nicht nur innerhalb der jeweiligen Stadt sondern auch in der jeweils anderen Stadt. Die an den anstehenden Aufgaben orientierten technologischen und sozialwissenschaftlichen Arbeitsschwerpunkte sowie die geplanten Tools unterstützen diesen Ansatz. Reale Aufgabenstellungen werden bearbeitet und für beide Städte und somit auch für andere Städte übertragbar gelöst. Das transdisziplinäre Projektkonsortium bildet sich aus den beiden Teams für die Demonstrationsvorhaben (Städte, Wohnungsbaugesellschaften, Energieversorger und weitere Planungsbeteiligte wie Forschungsinstitute und Fachplaner), sowie Experten in den Bereichen Sozialwissenschaft, und Denkmalschutz/Wärmedämmung. Zwei Industriepartner (Saint-Gobain Isover G+H AG und puren) sind in das Vorhaben eingebunden und steuern ihr Know-How bei.'
-    text2='Die Aufgabenstellung bis zum Jahr 2050 den Gebäudebestand der Bundesrepublik Deutschland und somit auch unserer Städte nahezu klimaneutral mit Energie zu versorgen, wird im Projekt STADTQUARTIER 2050 beispielhaft für zwei Quartiere in zwei Städten bereits jetzt angegangen. Dabei wird das jeweils vorhandene ambitionierte städtische Energiekonzept konkret in bewusst unterschiedlichen Wohnquartieren unter dem besonderen Aspekt der sozialverträglichen Mietpreisentwicklung umgesetzt. Es werden in den zwei Quartieren über 960 Wohneinheiten entstehen mit einer Gesamtinvestitionssumme von ca. 190 Mio. Euro. Im Einzelnen handelt es sich um ein Konversionsgebiet mit Umnutzung, Sanierung und teilweise Abriss und Neubebauung eines ehemaligen Krankenhausareals in Stuttgart und eine Randgebietssanierung mit Baufelderweiterung in Überlingen. Da in beiden Städten ähnliche Aufgaben im Bereich der unterschiedlichen Wohnquartiere anstehen, ermöglicht dieser systematische Ansatz, unterstützt auch durch den direkten Austausch in der geplanten Städteplattform eine Übertragung und Nutzung der Ergebnisse und Erfahrungen (also einen Multiplikationseffekt) aus den Demonstrationsquartieren nicht nur innerhalb der jeweiligen Stadt sondern auch in der jeweils anderen Stadt. Die an den anstehenden Aufgaben orientierten technologischen und sozialwissenschaftlichen Arbeitsschwerpunkte sowie die geplanten Tools unterstützen diesen Ansatz. Reale Aufgabenstellungen werden bearbeitet und für beide Städte und somit auch für andere Städte übertragbar gelöst. Das transdisziplinäre Projektkonsortium bildet sich aus den beiden Teams für die Demonstrationsvorhaben (Städte, Wohnungsbaugesellschaften, Energieversorger und weitere Planungsbeteiligte wie Forschungsinstitute und Fachplaner), sowie Experten in den Bereichen Sozialwissenschaft, und Denkmalschutz/Wärmedämmung. Zwei Industriepartner (Saint-Gobain Isover G+H AG und puren) sind in das Vorhaben eingebunden und steuern ihr Know-How bei.'
-
+    text = 'Zelda ist cool. Die Yuhan und Mario hat das neue Zelda. Shutong aber noch nicht.'
+    text2 ='Hallo Welt. Oder lieber Hello World! Oder Konichiwa! Sumimasem ! Arigatoooo! Mario ist doof!'
     cp = Textprocessor([text, text2], stopwords=stop_words)  # Für eigene Stopwörter hier stopwords = stop_words übergeben
     #cp.preprossText()
     kw = cp.ExtractKeywords()
-    #cp.CreatePairsFromKeywords()  # Falls Edges für Gephi abgespeichert werden sollen saveFile = True übergeben
-    #cp.CreateNetwork()
+    cp.CreatePairsFromKeywords()  # Falls Edges für Gephi abgespeichert werden sollen saveFile = True übergeben
+    g = cp.CreateNetwork()
     print(kw)
+    from pyvis.network import Network
+    g_in=Network()
+    g_in.toggle_hide_edges_on_drag(True)
+    g_in.barnes_hut()
+    g_in.from_nx(g)
+    g_in.show_buttons()
+    g_in.show('text.html')
+
+    
+

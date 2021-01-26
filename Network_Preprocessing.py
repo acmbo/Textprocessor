@@ -6,7 +6,7 @@ Created on Mon May  6 14:32:17 2019
 """
 
 
-#import Text_Class_Funktionen  as tcf
+import Text_Class_Funktionen  as tcf
 import re
 import numpy as np
 import pandas as pd
@@ -27,6 +27,7 @@ gerLem = GermaLemma()
 lem = WordNetLemmatizer()
 stem = PorterStemmer()
 stop_words = stopwords.words("german")
+#tr4w = tcf.TextRank4Keyword()
 
 #Zusatzstopwords
 stop_words.extend(['m²','FKZ','VE','/','„','KG','Co.','RAG','DMT','Ptj','K','PHI','u.a.','u.ä.','DUE','B.&S.U.',
@@ -40,7 +41,7 @@ stop_words.extend(['m²','FKZ','VE','/','„','KG','Co.','RAG','DMT','Ptj','K','
                    'Uvb','Ap','Arbeitspaket', 'Frauenhofer','Firma','Konzept','Covestro','Fresnel'])
 
 
-#tr4w = tcf.TextRank4Keyword()
+
 
 
 
@@ -112,7 +113,7 @@ def PrePross(ListofSentences,_comma=False, Fuzzy=False, FuzzyRank=False,
     import spacy
     #from nltk.tokenize import word_tokenize
     from nltk import word_tokenize
-    nlp = spacy.load("de_core_news_md")
+    nlp = spacy.load("de_core_news_lg")
 
 
 
@@ -178,7 +179,7 @@ def PrePross(ListofSentences,_comma=False, Fuzzy=False, FuzzyRank=False,
 
         if Remove_specCar:
             text=tcf.entferneStopper(text) # Führt zu Entfernung von Punkt am ende des Satzes
-            pass
+            
         else:
              text = word_tokenize(text)
              text = ",".join(text)
@@ -209,7 +210,7 @@ def PrePross(ListofSentences,_comma=False, Fuzzy=False, FuzzyRank=False,
                 for word in text1:
                     
                     spacy_doc = nlp(word)
-                    
+                    '''
                     if spacy_doc[0].pos_ == 'VERB':
                         r_value = gerLem.find_lemma(word,'VERB')
                         yield r_value 
@@ -225,9 +226,9 @@ def PrePross(ListofSentences,_comma=False, Fuzzy=False, FuzzyRank=False,
                     else:
                         r_value = gerLem.find_lemma(word,'N')
                         yield r_value
-                    
-                    #r_value = gerLem.find_lemma(word,'N')
-                    #yield r_value
+                    '''
+                    r_value = gerLem.find_lemma(word,'N')
+                    yield r_value
                               
                     
             #text = [gerLem.find_lemma(word,'N') for word in text] # Doppelter Stemmer und Lem
@@ -291,7 +292,7 @@ def PrePross(ListofSentences,_comma=False, Fuzzy=False, FuzzyRank=False,
                             if fuzzy_obereGrenze > Ratio > fuzzy_untereGrenze and word not in IgnoreWord_list:
                                 print(str(tokenlists[n][m]) + ' durch ' + str(word))
 
-                                file1 = open("KeywordsOutput\\FuzzyOutput.txt", "a")
+                                file1 = open("KeywordsOutput/FuzzyOutput.txt", "a")
                                 file1.write(str(tokenlists[n][m]) + ' durch ' + str(word) + ' wegen Ratio: '+ str(Ratio) +'; \n')
                                 file1.close()
 

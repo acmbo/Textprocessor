@@ -4,13 +4,30 @@ from KeywordAlgorithms import tfIdf_Vectorizer_getKeyWords, tfIdf_Vectorizer_tra
 import Network_Preprocessing as n_p
 import spacy
 
+'''
 saveFile = True
 CreatePairs = True          # Create Pairs for network
 usePrePross = False
 loadPairs = False           # Load Pairs from Excel
 PrePross = True             # Use Preprsoceesing
 bigrams = True              #Create bigram data with TFIDF
-useBigramData = True        #Use data for futher Process
+useBigramData = False        #Use data for futher Process
+ZahlStichw = 20             # Number of Keywords to generate from TfIDF
+
+# Which Algor to use
+TEXTRANK = False
+TFIDF = False
+TFIDFModi = True            # Best and Actual Method
+TFIDFModi2 = False #Prototype, doesnt work properly
+'''
+
+saveFile = False
+CreatePairs = True          # Create Pairs for network
+usePrePross = False
+loadPairs = False           # Load Pairs from Excel
+PrePross = False             # Use Preprsoceesing
+bigrams = True              #Create bigram data with TFIDF
+useBigramData = False        #Use data for futher Process
 ZahlStichw = 20             # Number of Keywords to generate from TfIDF
 
 # Which Algor to use
@@ -118,7 +135,7 @@ if __name__ == "__main__":
         pickle.dump(FKZ, open(filename, 'wb'))
         
 
-        Arr_KeyWord_df_pre = dfEn['Beschreibung'].values.tolist()
+        Arr_KeyWord_df_pre = dfEn['Beschreibung'].values.tolist()[0:50]
         
         
         print('Länge Corpus', len(Arr_KeyWord_df_pre))
@@ -243,7 +260,7 @@ if __name__ == "__main__":
             
             type_ = 'TFIDFModi'
             corpus = []
-            nlp = spacy.load("de_core_news_md")
+            nlp = spacy.load("de_core_news_lg")
 
 
             def corpusgen(func_corpus):
@@ -354,7 +371,7 @@ if __name__ == "__main__":
             
             type_ = 'TFIDFModi2'
             corpus = []
-            nlp = spacy.load("de_core_news_md")
+            nlp = spacy.load("de_core_news_lg")
 
 
             def corpusgen(func_corpus):
