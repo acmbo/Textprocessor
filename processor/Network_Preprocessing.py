@@ -5,8 +5,7 @@ Created on Mon May  6 14:32:17 2019
 @author: jri-swe
 """
 
-
-import Text_Class_Funktionen  as tcf
+from processor import Text_Class_Funktionen as tcf
 import re
 import numpy as np
 import pandas as pd

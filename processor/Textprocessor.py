@@ -1,7 +1,7 @@
 import pandas as pd
 import pickle
-from KeywordAlgorithms import tfIdf_Vectorizer_getKeyWords,tfIdf_Vectorizer_train,getTextrankKeywords
-import Network_Preprocessing as n_p
+from processor.KeywordAlgorithms import tfIdf_Vectorizer_getKeyWords,tfIdf_Vectorizer_train,getTextrankKeywords
+from processor import Network_Preprocessing as n_p
 
 saveFile = False
 CreatePairs = True
@@ -176,7 +176,7 @@ class Textprocessor:
 
         if kw_v2:
 
-            from NLP import Countmatrix, GetPairsNumpy, GetPairsWithWeight
+            from processor.NLP import Countmatrix, GetPairsNumpy, GetPairsWithWeight
 
             KeyM = Countmatrix(kw_v2, pandas=False, matrix=True)
 

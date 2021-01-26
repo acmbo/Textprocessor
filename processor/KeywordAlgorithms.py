@@ -1,6 +1,6 @@
 import pandas as pd
 #from multi_rake import Rake
-import Text_Class_Funktionen  as tcf
+from processor import Text_Class_Funktionen as tcf
 
 
 def getTextrankKeywords(string, stop_words=None):
