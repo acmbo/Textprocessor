@@ -2,7 +2,7 @@
 """
 Created on Mon May  6 14:30:51 2019
 
-@author: jri-swe
+@author: Stephan
 """
 
 
@@ -26,14 +26,13 @@ class TextRank4Keyword():
         self.node_weight = None # save keywords and its weight
 
 
-
-    
     def set_stopwords(self, stopwords):  
         """Set stop words"""
         for word in STOP_WORDS.union(set(stopwords)):
             lexeme = nlp.vocab[word]
             lexeme.is_stop = True
-    
+
+
     def sentence_segment(self, doc, candidate_pos, lower):
         """Store those words only in cadidate_pos"""
         sentences = []

@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thur April 11 19:25:22 2019
+
+@author: Stephan
+"""
+
+
+
 import pandas as pd
 from processor import TextRank as tR
 
@@ -32,7 +41,7 @@ def getTextrankKeywords(string, stop_words=None):
 
 def tfIdf_Keywords_train(corpus, stopword = None):
 
-    if stopwords:
+    if stopword:
         stop_Words = stopword
     else:
         from nltk.corpus import stopwords

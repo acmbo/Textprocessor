@@ -2,7 +2,7 @@
 """
 Created on Mon May  6 14:32:17 2019
 
-@author: jri-swe
+@author: Stephan
 """
 
 from processor import TextRank as tcf

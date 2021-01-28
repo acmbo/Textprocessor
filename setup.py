@@ -11,7 +11,7 @@ class Install(_install):
         nltk.download("stopwords")
         
         import spacy
-        print('Downloading language model for the spaCy POS tagger\n')
+        print('Downloading german language model for the spaCy POS tagger\n')
         from spacy.cli import download
         download('de_core_news_lg')
         #nlp = spacy.load('de_core_news_m')
@@ -24,7 +24,7 @@ setuptools.setup(
     version="0.1",
     author="Stephan Wegewitz",
     author_email="sWegewitz@outlook.de",
-    description="Package for Extracting Keywords and construction Relationnetworks with them.",
+    description="Package for Extracting Keywords and construction relation networks with them.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="",

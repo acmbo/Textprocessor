@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar  1 17:12:15 2019
+
+@author: Stephan
+"""
+
+
 import pandas as pd
-import pickle
 from processor.extractionAlgorithms import tfIdf_Vectorizer_getKeyWords,tfIdf_Vectorizer_train,getTextrankKeywords
 from processor import preprocessing as pre
 
@@ -70,13 +77,9 @@ class Textprocessor:
                 df = df.replace({String: s})
 
         df[0] = df.fillna(' ')
-        df_BackUp = df.copy()
         df = df[df[0] != ' ']
 
         Arr_KeyWord_df_pre = df[0].values.tolist()
-        #print('Länge Corpus', len(Arr_KeyWord_df_pre))
-
-
 
         Arr_KeyWord_df_New = pre.PrePross(Arr_KeyWord_df_pre,
                                           _comma=_comma,
@@ -124,11 +127,6 @@ class Textprocessor:
 
 
             kw_v2 = list(genKw(kw))
-
-            #if saveFile:
-            #    filename = 'KeywordArray_TextRank.sav'
-            #    pickle.dump(kw_v2, open(filename, 'wb'))
-
 
 
         if Algo == 'TFIDF':
@@ -201,8 +199,6 @@ class Textprocessor:
         '''
 
         Edges = self.Edges
-
-
 
         if Edges.empty == False:
             '''Fals ein Network ausgegeben werden soll, network auf True stellen'''
