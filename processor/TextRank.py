@@ -11,19 +11,21 @@ import numpy as np
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 import pandas as pd
-nlp = spacy.load("de_core_news_md")
-#spacy.load('de_core_news_md')
 
 
-#Aus https://towardsdatascience.com/textrank-for-keyword-extraction-by-python-c0bae21bcec0
 class TextRank4Keyword():
-    """Extract keywords from text"""
-    
+    """Extract keywords from text
+    #Credits to: https://towardsdatascience.com/textrank-for-keyword-extraction-by-python-c0bae21bcec0"""
+
+    nlp = spacy.load("de_core_news_md")
+
     def __init__(self):
         self.d = 0.85 # damping coefficient, usually is .85
         self.min_diff = 1e-5 # convergence threshold
         self.steps = 10 # iteration steps
         self.node_weight = None # save keywords and its weight
+
+
 
     
     def set_stopwords(self, stopwords):  
@@ -153,67 +155,4 @@ class TextRank4Keyword():
 
 
 
-#--------------Stemmmer--------------------
-def entferneStopper(liste): 
-    from nltk.tokenize import word_tokenize
-    tokenized_word=word_tokenize(liste)
-
-
-    from nltk.corpus import stopwords
-    stop_words=stopwords.words("german") #orginal ist in "english", kann aber auch mit Deutsch
-    stop_words.append(' ')
-    stop_words.append('``')
-    stop_words.append('""')
-    #Hier weitere stopwörter anhängen falls gebraucht
-    stop_words.extend(('sollen','mit','sowie','anhand',
-                       'darüber','hinaus','ersten','zweiten',
-                       'dritten','dabei','dass','darauf','bzw','deren',
-                       'derer','solche','solch','eigenen','einen','eine',
-                       'einen'))
-    #Spezielle Stopwöret für die Keywordextraktion
-    stop_words.extend(('ziel',
-                       'vorhaben','vorhabens',
-                       'schritt',
-                       'basis',
-                       'projekt','projekts',
-                       'fokus',
-                       'liegt',
-                       'gestellt',
-                       'hinsichtlich',
-                       'neuen',
-                       'mittels'
-                       ))
-    
-    
-    #print(stop_words)
-    filtered_sent=''
-    first=True
-    #stemmed_words=[]
-    for w in tokenized_word:
-        
-        #Entferne Klammern und andere
-        chars = {'Ã¶':'ö','Ã¤':'ä','Ã¼':'ü','ÃŸ':'ß',';':' ', '(':' ', ')': ' '}
-        for char in chars:
-            w = w.replace(char,chars[char])
-            
-        #Stemmer
-        #stemmed_words.append(sno.stem(w))
-        if w not in stop_words and first==False :
-            filtered_sent=filtered_sent+ ','+str(w)
-        
-        if w not in stop_words and first==True :
-            filtered_sent=filtered_sent+str(w)
-            first=False   
-    return filtered_sent
-
-#-------------------------------------------------------------------
-
-def MeistverwendeteWorte(string):
-    #df_return=pd.Series(' '.join(string).split()).value_counts()[:20]
-    #values = ' '.join(str(v) for v in string)
-    token = string.split()
-    token2 = pd.Series(token)
-    returnX = token2.value_counts()
-    
-    return(returnX)
 

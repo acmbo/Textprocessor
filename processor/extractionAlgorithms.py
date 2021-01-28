@@ -1,6 +1,5 @@
 import pandas as pd
-#from multi_rake import Rake
-from processor import Text_Class_Funktionen as tcf
+from processor import TextRank as tR
 
 
 def getTextrankKeywords(string, stop_words=None):
@@ -20,7 +19,7 @@ def getTextrankKeywords(string, stop_words=None):
 
         stop_words = stopwords.words("german")
 
-    tr4w = tcf.TextRank4Keyword()
+    tr4w = tR.TextRank4Keyword()
     tr4w.analyze(string,
                  candidate_pos=['NOUN', 'PROPN'],
                  window_size=4,
@@ -33,39 +32,25 @@ def getTextrankKeywords(string, stop_words=None):
 
 def tfIdf_Keywords_train(corpus, stopword = None):
 
-
     if stopwords:
-        stopWords = stopword
+        stop_Words = stopword
     else:
         from nltk.corpus import stopwords
-        stop_words = stopwords.words("german")
-        stop_words.extend(
-            ['m²', 'FKZ', 'VE', '/', '„', 'KG', 'Co.', 'RAG', 'DMT', 'Ptj', 'K', 'PHI', 'u.a.', 'u.ä.', 'DUE',
-             'B.&S.U.',
-             'ITC', 'ISE', 'ERC', 'm', 'Ost', 'Süd', 'EA', 'EASD', 'A.3', 'B.3', 'LES', 'TILSE', 'IAP', 'LWS', 'HEM',
-             '8)',
-             'Test', 'FTA', 'FH', 'A1', 'ITI', 'Nord', 'West', 'Ruhr', 'OPVT', 'm2', 'HH', 'HTW', 'TT-WB/ENS1',
-             'TT/MKX',
-             'ILK', 'm³', 'Standort', 'Adlershof', 'EBC', 'EEC', 'OPV', 'IKT', 'GSG', 'Ort', 'PCS', 'Projektabschnitt',
-             'kWh/m²', 'Ergebnisse', 'Voraussetzung', 'ScenoCalc', 'Schritt', 'Anbieter', 'Glaubwürdigkeit', 'Bezug',
-             'Validierung', 'Gebiet', 'Verbundprojekt', 'Equipment', 'Fragestellungen', 'Einfluss', 'Auswahl',
-             'Relation',
-             'Indevo', 'Projektpartnern', 'Anzahl', 'Angebot', 'Bedarf'])
+        stop_Words = stopwords.words("german")
 
-        stopWords = stop_words
 
     from sklearn.feature_extraction.text import CountVectorizer
-    import re
+
     docs = corpus
 
     # create a vocabulary of words,
     # ignore words that appear in 85% of documents,
     # eliminate stop words
-    cv = CountVectorizer(max_df=0.85, stop_words=stopWords)
+    cv = CountVectorizer(max_df=0.85, stop_words=stop_Words)
     word_count_vector = cv.fit_transform(docs)
 
     # you only needs to do this once, this is a mapping of index to
-    feature_names = cv.get_feature_names()
+    # feature_names = cv.get_feature_names()
 
     from sklearn.feature_extraction.text import TfidfTransformer
 
@@ -77,7 +62,6 @@ def tfIdf_Keywords_train(corpus, stopword = None):
 
 
 def tfIdf_Keywords_getKeyW(targetCorpus,cv,tfidf_transformer, nKey=10):
-
 
     '''From https://kavita-ganesan.com/extracting-keywords-from-text-tfidf/'''
     def sort_coo(coo_matrix):
@@ -141,20 +125,11 @@ def tfIdf_Vectorizer_train(corpus,
     '''Function to get TF-IDF Frequencey matrix from TfidfVectorzier'''
 
     if stop_word:
-
         stop_words = stop_word
-
     else:
         from nltk.corpus import stopwords
         stop_words = stopwords.words("german")
-        stop_words.extend(
-           ['m²', 'FKZ', 'VE', '/', '„', 'KG', 'Co.', 'RAG', 'DMT', 'Ptj', 'K', 'PHI', 'u.a.', 'u.ä.', 'DUE', 'B.&S.U.',
-           'ITC', 'ISE', 'ERC', 'm', 'Ost', 'Süd', 'EA', 'EASD', 'A.3', 'B.3', 'LES', 'TILSE', 'IAP', 'LWS', 'HEM', '8)',
-            'Test', 'FTA', 'FH', 'A1', 'ITI', 'Nord', 'West', 'Ruhr', 'OPVT', 'm2', 'HH', 'HTW', 'TT-WB/ENS1', 'TT/MKX',
-            'ILK', 'm³', 'Standort', 'Adlershof', 'EBC', 'EEC', 'OPV', 'IKT', 'GSG', 'Ort', 'PCS', 'Projektabschnitt',
-            'kWh/m²', 'Ergebnisse', 'Voraussetzung', 'ScenoCalc', 'Schritt', 'Anbieter', 'Glaubwürdigkeit', 'Bezug',
-            'Validierung', 'Gebiet', 'Verbundprojekt', 'Equipment', 'Fragestellungen', 'Einfluss', 'Auswahl', 'Relation',
-            'Indevo', 'Projektpartnern', 'Anzahl', 'Angebot', 'Bedarf'])
+
 
     from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -188,25 +163,28 @@ def tfIdf_Vectorizer_train(corpus,
         names = fitted_vectorizer.get_feature_names()
         return(names,tfidf_vectorizer_vectors)
 
+
+
 def tfIdf_Vectorizer_getKeyWords(df, column , n=10):
     '''Funktion um aus String Keywords zu extrahieren. Muss vorher aber den Vectorizer Trainieren'''
     return df.loc[column].sort_values(ascending=False)[:n]
 
 
 
-
 def getRakeKeywords(string,stopwords1):
     '''Bringt nicht gewünschte Ergebnisse'''
-    r = Rake(min_chars=3,
-             max_words=2,
-             min_freq=1,
-             language_code='de',  # 'en'
-             stopwords=None,  # {'and', 'of'}
-             lang_detect_threshold=50,
-             max_words_unknown_lang=2,
-             generated_stopwords_percentile=80,
-             generated_stopwords_max_len=3,
-             generated_stopwords_min_freq=2
-             )
-    keywords_R = r.apply(string)
-    return (keywords_R[:10])
+    #from multi_rake import Rake
+    #r = Rake(min_chars=3,
+    #         max_words=2,
+    #         min_freq=1,
+    #         language_code='de',  # 'en'
+    #         stopwords=None,  # {'and', 'of'}
+    #         lang_detect_threshold=50,
+    #         max_words_unknown_lang=2,
+    #         generated_stopwords_percentile=80,
+    #         generated_stopwords_max_len=3,
+    #         generated_stopwords_min_freq=2
+    #         )
+    #keywords_R = r.apply(string)
+    #return (keywords_R[:10])
+    return 0

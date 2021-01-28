@@ -7,7 +7,7 @@ Created on Fri Nov  1 23:05:00 2019
 
 import pandas as pd
 import numpy as np
-#from graph_tool.all import *
+
 
 
 def TrainIdf(Trainingset):
@@ -89,6 +89,9 @@ def getPairsPandas(M):
                     Pair=[M.index[row], M.index[col]]
                     Pairs.append(Pair)
         return Pairs
+
+
+
 
 def GetPairsNumpy(KeyM):
     '''Create Pairs vor Gephi and Networkanalysis'''

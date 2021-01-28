@@ -1,16 +1,7 @@
 import pandas as pd
 import pickle
-from processor.KeywordAlgorithms import tfIdf_Vectorizer_getKeyWords,tfIdf_Vectorizer_train,getTextrankKeywords
-from processor import Network_Preprocessing as n_p
-
-saveFile = False
-CreatePairs = True
-TEXTRANK = True
-TFIDF = False
-loadPairs = False
-Plot = False
-network = False
-
+from processor.extractionAlgorithms import tfIdf_Vectorizer_getKeyWords,tfIdf_Vectorizer_train,getTextrankKeywords
+from processor import preprocessing as pre
 
 
 class Textprocessor:
@@ -87,7 +78,7 @@ class Textprocessor:
 
 
 
-        Arr_KeyWord_df_New = n_p.PrePross(Arr_KeyWord_df_pre,
+        Arr_KeyWord_df_New = pre.PrePross(Arr_KeyWord_df_pre,
                                           _comma=_comma,
                                           Fuzzy=Fuzzy,
                                           FuzzyRank=FuzzyRank,
@@ -176,7 +167,7 @@ class Textprocessor:
 
         if kw_v2:
 
-            from processor.NLP import Countmatrix, GetPairsNumpy, GetPairsWithWeight
+            from processor.graph_matrix_functions import Countmatrix, GetPairsNumpy, GetPairsWithWeight
 
             KeyM = Countmatrix(kw_v2, pandas=False, matrix=True)
 
@@ -241,52 +232,6 @@ class Textprocessor:
             print('No Edges Found...')
 
 
-if __name__=='__main__':
-    from nltk.corpus import stopwords
-
-    stop_words = stopwords.words("german")  # orginal ist in "english", kann aber auch mit Deutsch
-    stop_words.append(' ')
-    stop_words.append('``')
-    stop_words.append('""')
-    # Hier weitere stopwörter anhängen falls gebraucht
-    stop_words.extend(('sollen', 'mit', 'sowie', 'anhand',
-                       'darüber', 'hinaus', 'ersten', 'zweiten',
-                       'dritten', 'dabei', 'dass', 'darauf', 'bzw', 'deren',
-                       'derer', 'solche', 'solch', 'eigenen', 'einen', 'eine',
-                       'einen'))
-    # Spezielle Stopwöret für die Keywordextraktion
-    stop_words.extend(('ziel',
-                       'vorhaben', 'vorhabens',
-                       'schritt',
-                       'basis',
-                       'projekt', 'projekts',
-                       'fokus',
-                       'liegt',
-                       'gestellt',
-                       'hinsichtlich',
-                       'neuen',
-                       'mittels',
-                       'z.B.',
-                       'ISE', 'GENESIS', 'PERC', '%', 'TUK', 'TU', 'ISFH', 'PERC+', 'a2-solar', 'B.', 'DI', 'HPDI',
-                       'TU-München', 'Tegtmeyer',
-                       'Stuttgart','Deutschland','Aufgaben','Ansatz','Aufgaben'
-                       ))
-
-    text = 'Zelda ist cool. Die Yuhan und Mario hat das neue Zelda. Shutong aber noch nicht.'
-    text2 ='Hallo Welt. Oder lieber Hello World! Oder Konichiwa! Sumimasem ! Arigatoooo! Mario ist doof!'
-    cp = Textprocessor([text, text2], stopwords=stop_words)  # Für eigene Stopwörter hier stopwords = stop_words übergeben
-    #cp.preprossText()
-    kw = cp.ExtractKeywords()
-    cp.CreatePairsFromKeywords()  # Falls Edges für Gephi abgespeichert werden sollen saveFile = True übergeben
-    g = cp.CreateNetwork()
-    print(kw)
-    from pyvis.network import Network
-    g_in=Network()
-    g_in.toggle_hide_edges_on_drag(True)
-    g_in.barnes_hut()
-    g_in.from_nx(g)
-    g_in.show_buttons()
-    g_in.show('text.html')
 
     
 
