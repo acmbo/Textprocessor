@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="De">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Textprocessor’s documentation! &#8212; Textprocessor 0.1 Dokumentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="genindex.html" />
+    <link rel="search" title="Suche" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-textprocessor-s-documentation">
+<h1>Welcome to Textprocessor’s documentation!<a class="headerlink" href="#welcome-to-textprocessor-s-documentation" title="Link zu dieser Überschrift">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="module-processor.extractionAlgorithms">
+<span id="teacherapi-models"></span><h1>TeacherAPI models<a class="headerlink" href="#module-processor.extractionAlgorithms" title="Link zu dieser Überschrift">¶</a></h1>
+<p>Created on Thur April 11 19:25:22 2019</p>
+<p>&#64;author: Stephan</p>
+<dl class="function">
+<dt id="processor.extractionAlgorithms.getRakeKeywords">
+<code class="sig-prename descclassname">processor.extractionAlgorithms.</code><code class="sig-name descname">getRakeKeywords</code><span class="sig-paren">(</span><em class="sig-param">string</em>, <em class="sig-param">stopwords1</em><span class="sig-paren">)</span><a class="headerlink" href="#processor.extractionAlgorithms.getRakeKeywords" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Bringt nicht gewünschte Ergebnisse</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="processor.extractionAlgorithms.getTextrankKeywords">
+<code class="sig-prename descclassname">processor.extractionAlgorithms.</code><code class="sig-name descname">getTextrankKeywords</code><span class="sig-paren">(</span><em class="sig-param">string</em>, <em class="sig-param">stop_words=None</em><span class="sig-paren">)</span><a class="headerlink" href="#processor.extractionAlgorithms.getTextrankKeywords" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Gibt Keywords durch Textrank aus</p>
+<p>Aufruf z.B.</p>
+<p>from nltk.corpus import stopwords
+stop_words = stopwords.words(„german“)</p>
+<p>t=getTextrankKeywords(‚Blablalbalbl hallo‘, stop_words)
+print(t)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="processor.extractionAlgorithms.tfIdf_Keywords_getKeyW">
+<code class="sig-prename descclassname">processor.extractionAlgorithms.</code><code class="sig-name descname">tfIdf_Keywords_getKeyW</code><span class="sig-paren">(</span><em class="sig-param">targetCorpus</em>, <em class="sig-param">cv</em>, <em class="sig-param">tfidf_transformer</em>, <em class="sig-param">nKey=10</em><span class="sig-paren">)</span><a class="headerlink" href="#processor.extractionAlgorithms.tfIdf_Keywords_getKeyW" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>From <a class="reference external" href="https://kavita-ganesan.com/extracting-keywords-from-text-tfidf/">https://kavita-ganesan.com/extracting-keywords-from-text-tfidf/</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="processor.extractionAlgorithms.tfIdf_Vectorizer_getKeyWords">
+<code class="sig-prename descclassname">processor.extractionAlgorithms.</code><code class="sig-name descname">tfIdf_Vectorizer_getKeyWords</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">column</em>, <em class="sig-param">n=10</em><span class="sig-paren">)</span><a class="headerlink" href="#processor.extractionAlgorithms.tfIdf_Vectorizer_getKeyWords" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Funktion um aus String Keywords zu extrahieren. Muss vorher aber den Vectorizer Trainieren</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="processor.extractionAlgorithms.tfIdf_Vectorizer_train">
+<code class="sig-prename descclassname">processor.extractionAlgorithms.</code><code class="sig-name descname">tfIdf_Vectorizer_train</code><span class="sig-paren">(</span><em class="sig-param">corpus</em>, <em class="sig-param">standard=True</em>, <em class="sig-param">ngrams=False</em>, <em class="sig-param">stop_word=None</em>, <em class="sig-param">ngram_range=(1</em>, <em class="sig-param">2)</em><span class="sig-paren">)</span><a class="headerlink" href="#processor.extractionAlgorithms.tfIdf_Vectorizer_train" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Function to get TF-IDF Frequencey matrix from TfidfVectorzier</p>
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link zu dieser Überschrift">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Stichwortverzeichnis</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Modulindex</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Suche</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Textprocessor</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Schnellsuche</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Los" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Stephan Wegewitz.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

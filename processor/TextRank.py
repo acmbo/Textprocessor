@@ -17,19 +17,19 @@ class TextRank4Keyword():
     """Extract keywords from text
     #Credits to: https://towardsdatascience.com/textrank-for-keyword-extraction-by-python-c0bae21bcec0"""
 
-    nlp = spacy.load("de_core_news_md")
 
-    def __init__(self):
+    def __init__(self,nlp):
         self.d = 0.85 # damping coefficient, usually is .85
         self.min_diff = 1e-5 # convergence threshold
         self.steps = 10 # iteration steps
         self.node_weight = None # save keywords and its weight
+        self.nlp = nlp
 
 
     def set_stopwords(self, stopwords):  
         """Set stop words"""
         for word in STOP_WORDS.union(set(stopwords)):
-            lexeme = nlp.vocab[word]
+            lexeme = self.nlp.vocab[word]
             lexeme.is_stop = True
 
 
@@ -116,7 +116,7 @@ class TextRank4Keyword():
         self.set_stopwords(stopwords)
         
         # Pare text by spaCy
-        doc = nlp(text)
+        doc = self.nlp(text)
         
         # Filter sentences
         sentences = self.sentence_segment(doc, candidate_pos, lower) # list of list of words

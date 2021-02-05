@@ -6,21 +6,21 @@ Created on Thur April 11 19:25:22 2019
 """
 
 
-
+import numpy as np
 import pandas as pd
 from processor import TextRank as tR
 
 
-def getTextrankKeywords(string, stop_words=None):
-    '''Gibt Keywords durch Textrank aus
+def getTextrankKeywords(string, nlp, stop_words=None, n=10):
+    '''
+    Creates keywords through TextRank algorithm.
 
-    Aufruf z.B.
+    Args:
+        string (): string - String of a text, in which keywords are to find in
+        stop_words (): list of stopwords
+        n ():  int - amount of keywords
 
-    from nltk.corpus import stopwords
-    stop_words = stopwords.words("german")
-
-    t=getTextrankKeywords('Blablalbalbl hallo', stop_words)
-    print(t)
+    Returns: Keywords as tuple
 
     '''
     if not stop_words:
@@ -28,18 +28,28 @@ def getTextrankKeywords(string, stop_words=None):
 
         stop_words = stopwords.words("german")
 
-    tr4w = tR.TextRank4Keyword()
+    tr4w = tR.TextRank4Keyword(nlp=nlp)
     tr4w.analyze(string,
                  candidate_pos=['NOUN', 'PROPN'],
                  window_size=4,
                  lower=False,
                  stopwords=stop_words)
-    keywords_TR = tr4w.get_keywords(number=10)
+    keywords_TR = tr4w.get_keywords(number=n)
     return (keywords_TR)
 
 
 
 def tfIdf_Keywords_train(corpus, stopword = None):
+    '''
+    Train vectorizer and returns the trained count vectorizer
+
+    Args:
+        corpus (): list of strings of texts, where algorithm needs to find keywords from
+        stopword (): list of stopwords
+
+    Returns:
+
+    '''
 
     if stopword:
         stop_Words = stopword
@@ -70,68 +80,26 @@ def tfIdf_Keywords_train(corpus, stopword = None):
 
 
 
-def tfIdf_Keywords_getKeyW(targetCorpus,cv,tfidf_transformer, nKey=10):
-
-    '''From https://kavita-ganesan.com/extracting-keywords-from-text-tfidf/'''
-    def sort_coo(coo_matrix):
-        tuples = zip(coo_matrix.col, coo_matrix.data)
-        return sorted(tuples, key=lambda x: (x[1], x[0]), reverse=True)
-
-    def extract_topn_from_vector(feature_names, sorted_items, topn=10):
-        """get the feature names and tf-idf score of top n items"""
-
-        # use only topn items from vector
-        sorted_items = sorted_items[:topn]
-
-        score_vals = []
-        feature_vals = []
-
-        # word index and corresponding tf-idf score
-        for idx, score in sorted_items:
-            # keep track of feature name and its corresponding score
-            score_vals.append(round(score, 3))
-            feature_vals.append(feature_names[idx])
-
-        # create a tuples of feature,score
-        # results = zip(feature_vals,score_vals)
-        results = {}
-        for idx in range(len(feature_vals)):
-            results[feature_vals[idx]] = score_vals[idx]
-
-        return results
-
-
-    # get the document that we want to extract keywords from
-    doc = targetCorpus
-
-    feature_names = cv.get_feature_names()
-
-    # generate tf-idf for the given document
-    tf_idf_vector = tfidf_transformer.transform(cv.transform([doc]))
-
-    # sort the tf-idf vectors by descending order of scores
-    sorted_items = sort_coo(tf_idf_vector.tocoo())
-
-    # extract only the top n; n here is 10
-    keywords = extract_topn_from_vector(feature_names, sorted_items, nKey)
-
-    # now print the results
-    print("\n=====Doc=====")
-    print(doc)
-    print("\n===Keywords===")
-    for k in keywords:
-        print(k, keywords[k])
-
-
-
-
 
 def tfIdf_Vectorizer_train(corpus,
                            standard=True, 
                            ngrams=False,
                            stop_word = None, 
                            ngram_range = (1,2)):
-    '''Function to get TF-IDF Frequencey matrix from TfidfVectorzier'''
+    '''
+    Function to get TF-IDF Frequencey matrix from TfidfVectorzier
+
+    Args:
+        corpus (): list of strings of texts, where algorithm needs to find keywords from
+        standard (): bol - returns a pands dataframe if true (ram heavy) or returns sparse.matrix if false
+        ngrams (): bol - if True, tf-IDF will calculate n-grams
+        stop_word (): list of stopwords
+        ngram_range (): tuple - if ngrams==True here you can decide what kind of ngrams should be used.
+                                See tf_idf documention in sklearn for mor information
+
+    Returns: tf-IDF vector either as pandas DF or as sparse matrix
+
+    '''
 
     if stop_word:
         stop_words = stop_word
@@ -174,9 +142,23 @@ def tfIdf_Vectorizer_train(corpus,
 
 
 
-def tfIdf_Vectorizer_getKeyWords(df, column , n=10):
-    '''Funktion um aus String Keywords zu extrahieren. Muss vorher aber den Vectorizer Trainieren'''
-    return df.loc[column].sort_values(ascending=False)[:n]
+def tfIdf_Vectorizer_getKeyWords(df, column , n=10, intype='pandas'):
+    '''
+    Function to return keywords from a tf_idf vectorizer in pandas
+    Args:
+        df (): Dataframe of vectors
+        column (): Target Keyword
+        n (): number of keywords
+
+    Returns:
+
+    '''
+    if intype=='pandas':
+        return df.loc[column].sort_values(ascending=False)[:n]
+    elif intype=='sparse':
+        return list(reversed([df[0][x] for x in np.argsort(df[1][column].toarray())[0][-n:]]))
+    else:
+        return 0
 
 
 

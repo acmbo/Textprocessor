@@ -15,9 +15,7 @@ def TrainIdf(Trainingset, stop_words='english'):
     ----------
     Parameters:
     
-    Trainingset -- List of Strings, which will be analyzed for Keywords 
-    
-
+    Trainingset -- List of Strings, which will be analyzed for Keywords
     ----------
     
     Keyword Extraction with Sk Learn
@@ -57,11 +55,17 @@ def TrainIdf(Trainingset, stop_words='english'):
 
 def Countmatrix(ListofStrings, pandas=True, matrix=False):
 
-    '''Builds the Countmatrix and afterwards multiplicates it with its own 
+    '''
+    Builds the Countmatrix and afterwards multiplicates it with its own
     transposed to get the occurences of Keywords with one another
-    
-    Parameters:
-        ListofStrings -- List of multipe Arrays of Strings. Should all be Keywords
+
+    Args:
+        ListofStrings ():  List of multipe Arrays of Strings. Should all be Keywords
+        pandas (): bol - return a pandas dataframe (ram heavy) or return scipy sparse matrix
+        matrix (): bol - return a pandas dataframe (ram heavy) or return scipy sparse matrix
+
+    Returns:
+
     '''
     
     from sklearn.feature_extraction.text import CountVectorizer
@@ -86,7 +90,7 @@ def Countmatrix(ListofStrings, pandas=True, matrix=False):
 def getPairsPandas(M):
 
         ''' Get Pairs from a Pandas Dataframe. Only goes along one Half of the Matrix
-        !!!!!!Funktioniert Nicht !!!!'''
+        !!!!!!Funktioniert Nicht !!!! - Corrupted!!!!'''
 
         Pairs = []
         row = -1
@@ -104,8 +108,16 @@ def getPairsPandas(M):
 
 
 def GetPairsNumpy(KeyM):
+    '''
+    Create Pairs vor Gephi and Networkanalysis from KeyM- Tuple which consist of (sparse.matrix of vectorizer,
+    feature.names)
 
-    '''Create Pairs vor Gephi and Networkanalysis'''
+    Args:
+        KeyM (): Tuple - (sparse.matrix, features.names) from vectorizer TF-IDF
+
+    Returns: List of coocurrance pairs
+
+    '''
     M = KeyM[0]
     KeyW = KeyM[1]
 
@@ -130,9 +142,18 @@ def GetPairsNumpy(KeyM):
 
 
 def GetPairsWithWeight(KeyM):
-    '''Create Pairs vor Gephi and Networkanalysis. Creates Dataframe with Souce, Target and Weight. Weight correspondes
-    to the number of occurences, in which the Keyword occured allong the give corpus. M is the Countmatrix from Countvectorizer
-    and KeyW is the name of Keywords, which has to be extracted from Countvetorizer.'''
+    '''
+    Create Pairs vor Gephi and Networkanalysis. Creates Dataframe with Souce, Target and Weight.
+    Weight correspondes to the number of occurences, in which the Keyword occured allong the give corpus.
+    M is the Countmatrix from Countvectorizer and KeyW is the name of Keywords, which has to be extracted
+     from Countvetorizer.
+
+    Args:
+        KeyM (): Tuple - (sparse.matrix, features.names) from vectorizer TF-IDF
+
+    Returns: pandas Dataframe with pairs of coocurrant features within the sparse.matrix
+
+    '''
 
     #KeyM entspricht nicht der KeyM aus diesem Skript! sonder ist ein Pandas Dataframe, der
     # aus dem Countvektroizer gewonnen wird
@@ -180,29 +201,33 @@ def GetPairsWithWeight(KeyM):
 
 
 def VerbinungsDataframeErzeugen(dataFrame):
-    # Erstellen des Dataframes mit Verbindungen zwischen den Einzelnen Stichworten in der Schlagwortdatei
-    # ÜBERGAGE: dataFrame muss ein Pandas Dataframe der eine Matrix enthält, die zu Verbindungen umgewandelt werden sollen
-    # Die Verbindungen werden entlang der Spalten erzeugt!!
-    # Bsp:
-    #   a    b    c
-    # a1 1    2    0
-    # a2 0    3    0
-    # a3 1    0    1
+    '''
+     Erstellen des Dataframes mit Verbindungen zwischen den Einzelnen Stichworten in der Schlagwortdatei
+     ÜBERGAGE: dataFrame muss ein Pandas Dataframe der eine Matrix enthält, die zu Verbindungen umgewandelt werden sollen
+     Die Verbindungen werden entlang der Spalten erzeugt!!
+     Bsp:
+       a    b    c
+     a1 1    2    0
+     a2 0    3    0
+     a3 1    0    1
 
-    # Wird zu [1,0,1],[2,3,0],[0,0,1]
-    # Verbindung wird Paarweise erzeugt aus den Listen. Also:
-    # Beispiel für [2,3,0]
-    # Source Targert
-    #   2       3
-    #   2       0
-    #   3       2
-    #   3       0
-    #   0       2
-    #   0       3
+     Wird zu [1,0,1],[2,3,0],[0,0,1]
+     Verbindung wird Paarweise erzeugt aus den Listen. Also:
+     Beispiel für [2,3,0]
+     Source Targert
+       2       3
+       2       0
+       3       2
+       3       0
+       0       2
+       0       3
 
-    # Die Ausgabe sollte immer in einen neuen Dataframe gespeicher werden mit
-    # df_neu = VerbinungsDataframeErzeugen(df).copy()
+    Args:
+        dataFrame ():
 
+    Returns:
+
+    '''
 
     gephiVerb = pd.DataFrame(columns=['Source', 'Target', 'Column'])
 

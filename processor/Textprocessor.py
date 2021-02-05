@@ -13,11 +13,12 @@ from processor import preprocessing as pre
 
 class Textprocessor:
 
-    def __init__(self, corpus, stopwords=None,wordexclusionlist=None):
+    def __init__(self, corpus,nlp,stopwords=None,wordexclusionlist=None):
         '''
         Class for Textprocessing.
         Generates Keywords, can create a Network from the Keywords
 
+        :param nlp: loaded spacy module. necessary for TextRank Algroithm
         :param corpus: list - Textcorpus, which Keywords will be extract from. Should be a list of Texts, e.g ['one or two','three or four'] (Not a list of Words)
         :param stopwords: list - Words, which should be excluded by the Preprocessing
 		:param wordexclusionlist: list - Words, which will be excluded from Preprocessing when searching for Words (Wörter werden im Corpus gehalten und nicht gefiltert)
@@ -29,6 +30,7 @@ class Textprocessor:
         self.Keywords = None        # Werden in Funktionen assigned
         self.Edges = None           # Werden in Funktionen assigned
         self.Graph = None           # Werden in Funktionen assigned
+        self.nlp = nlp
 
         print('======================================')
         print('Length of Corpus: ',len(self.Corpus))
@@ -95,7 +97,7 @@ class Textprocessor:
         return preprossList
 
 
-    def ExtractKeywords(self, Algo = 'Textrank'):
+    def ExtractKeywords(self, Algo = 'Textrank',n=10):
         '''
         Generate Keywords.
         Two Algorithms Available: Textrank and TFIDF
@@ -111,9 +113,9 @@ class Textprocessor:
 
         if Algo == 'Textrank':
 
-            type = 'TextRank'
+            _type = 'TextRank'
 
-            kw = [getTextrankKeywords(entry, self.stop_words) for entry in corpus]
+            kw = [getTextrankKeywords(entry,self.nlp, self.stop_words,n=n) for entry in corpus]
             print('Created TR Keywords...')
 
 
@@ -129,13 +131,19 @@ class Textprocessor:
             kw_v2 = list(genKw(kw))
 
 
-        if Algo == 'TFIDF':
+        elif Algo == 'TFIDF':
 
-            type = 'TFIDF'
+            _type = 'TFIDF'
+            intype = 'sparse'
 
-            tfdf = tfIdf_Vectorizer_train(corpus,stop_word = self.stop_words)
 
-            kw = [tfIdf_Vectorizer_getKeyWords(tfdf, i, n=10).index.tolist() for i in range(0,len(corpus))]
+            if intype == 'pandas':
+                tfdf = tfIdf_Vectorizer_train(corpus, stop_word=self.stop_words, standard=True)
+                kw = [tfIdf_Vectorizer_getKeyWords(tfdf, i, n=n).index.tolist() for i in range(0,len(corpus))]
+
+            elif intype == 'sparse':
+                tfdf = tfIdf_Vectorizer_train(corpus, stop_word=self.stop_words, standard=False)
+                kw = [tfIdf_Vectorizer_getKeyWords(tfdf, i, n=n, intype=intype) for i in range(0, len(corpus))]
 
 
             def genKw(corpus):
@@ -146,7 +154,11 @@ class Textprocessor:
 
             kw_v2 = list(genKw(kw))
 
-        print('Keywords Created..')
+        else:
+            self.Keywords = []
+            kw_v2 = []
+
+        print('Keywords Created with {t}..'.format(t=_type))
 
         self.Keywords = kw_v2
 

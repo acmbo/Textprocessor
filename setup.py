@@ -11,10 +11,10 @@ class Install(_install):
         nltk.download("stopwords")
         
         import spacy
-        print('Downloading german language model for the spaCy POS tagger\n')
+        print('Downloading english language model for the spaCy POS tagger\n')
         from spacy.cli import download
-        download('de_core_news_lg')
-        #nlp = spacy.load('de_core_news_m')
+        download('en_core_web_md')
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
